@@ -3,8 +3,10 @@ import React from 'react'
 const Button = props => {
   const { name } = props
 
+  const handleClick = () => console.log('button clicked')
+
   return (
-    <button>{name}</button>
+    <button onClick={handleClick}>{name}</button>
   )
 }
 

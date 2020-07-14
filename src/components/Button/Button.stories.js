@@ -1,4 +1,5 @@
 import React from 'react'
+import { action } from '@storybook/addon-actions';
 import { withKnobs, text } from '@storybook/addon-knobs'
 
 import Button from '.'
@@ -13,4 +14,4 @@ const myProps = () => ({
   name: text('Name', 'Create')
 })
 
-export const Basic = () => <Button name={text('Name', 'Create')} />
+export const Basic = () => <Button onClick={() => console.log('clicked from above')} {...myProps()} />

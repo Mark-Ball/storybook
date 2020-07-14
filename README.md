@@ -1,68 +1,72 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Storybook
 
-## Available Scripts
+## 1. Install storybook in the project
 
-In the project directory, you can run:
+```npx -p @storybook/cli sb init```
 
-### `npm start`
+## 2. Start storybook
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The files and run script have been added by the above step.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```npm run storybook```
 
-### `npm test`
+## 3. Create stories
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Stories are the main part feature of storybook. Each story represents a state of a React component. 
 
-### `npm run build`
+Each story must import React and the component it represents.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+It must have a default export which is an object used to display information in the storybook interface.
+```javascript
+export default {
+  title: 'Custom Button',
+  component: Button
+}
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Then named export/s are used for the component itself.
+```javascript
+export const Basic = () => <Button />
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 4. Adding knobs
 
-### `npm run eject`
+Knobs are an addon which allows you to select which props the component receives in the storybook interface.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- install the knobs addon ```npm add @storybook/addon-knobs --save-dev```
+- include the addon within ```.storybook/main.js```:   
+  ```javascript
+  addons: [
+    '@storybook/addon-knobs/register'
+  ]
+  ```
+- add knobs to the stories file
+  ```javascript
+  import { withKnobs, text } from '@storybook/addon-knobs'
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  export default {
+    title: 'Custom Button',
+    component: Button,
+    decorators: [withKnobs]
+  }
+  ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+We can now use knobs like text, boolean, number etc (docs: https://www.npmjs.com/package/@storybook/addon-knobs) to define our knobs.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 5. Using knobs to add props
 
-## Learn More
+We can define a function to return a props object
+```javascript
+const myProps = () => ({
+  name: text('Name', 'Create')
+})
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+In our named export we can then call the function and spread the returned value to act as props.
+```javascript
+export const Basic = () => <Button {...myProps()} />
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 6. Using actions
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+https://www.npmjs.com/package/@storybook/addon-actions
