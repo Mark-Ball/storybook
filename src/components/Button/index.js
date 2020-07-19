@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Button = props => {
-  const { name } = props
+  const { name, click } = props
 
-  const handleClick = () => console.log('button clicked')
+  const [counter, setCounter] = useState(0)
+
+  const handleClick = () => setCounter(counter + 1)
 
   return (
-    <button onClick={handleClick}>{name}</button>
+    <button onClick={handleClick}>{name}: {counter}</button>
   )
 }
 

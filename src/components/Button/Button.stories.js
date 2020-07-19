@@ -11,7 +11,12 @@ export default {
 }
 
 const myProps = () => ({
-  name: text('Name', 'Create')
+  name: text('Name', 'Create'),
+  click: action('clicked')
 })
 
-export const Basic = () => <Button onClick={() => console.log('clicked from above')} {...myProps()} />
+export const Basic = () => (
+  <Button
+    {...myProps()}
+  />
+)
